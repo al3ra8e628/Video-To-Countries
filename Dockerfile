@@ -11,6 +11,7 @@ RUN pip3 install --upgrade AudioSegment
 RUN pip3 install --upgrade geograpy3
 RUN pip3 install --upgrade newspaper3k
 RUN pip3 install --upgrade Flask
+RUN pip3 install --upgrade  redis
 
 #RUN python3 service.py
 CMD [ "python", "lib/service.py" ]

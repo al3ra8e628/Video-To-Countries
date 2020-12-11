@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 import uuid
@@ -24,6 +25,7 @@ def download(url):
 
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
+
     wav_file_path = file_name + ".wav"
     subprocess.call(['ffmpeg', '-i', mp3_file_path, wav_file_path])
     os.remove(mp3_file_path)
@@ -31,8 +33,8 @@ def download(url):
 
 
 def progress_hook(d):
-    if d['status'] == 'finished':
-        file_tuple = os.path.split(os.path.abspath(d['filename']))
-        print("Done downloading {}".format(file_tuple[1]))
     if d['status'] == 'downloading':
-        print(d['filename'], d['_percent_str'], d['_eta_str'])
+        logging.info("downloading {} percent {} downloading...",
+                     d['filename'], d['_percent_str'])
+    if d['status'] == 'finished':
+        logging.info("Done downloading...")
