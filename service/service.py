@@ -1,14 +1,16 @@
 import threading
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 import ProcessVideoJob
 from repositories import ProcessRepository
 
 app = Flask(__name__)
+CORS(app)
 
 
-@app.route('/processes', methods=['POST'])
+@app.route('/api/v1/processes', methods=['POST'])
 def start_process():
     req_data = request.get_json()
     video_url = str(req_data['url'])
@@ -26,12 +28,12 @@ def start_process():
     return process
 
 
-@app.route('/processes', methods=['GET'])
+@app.route('/api/v1/processes', methods=['GET'])
 def list_processes():
     return jsonify(ProcessRepository.list_processes())
 
 
-@app.route('/processes/<process_id>', methods=['GET'])
+@app.route('/api/v1/processes/<process_id>', methods=['GET'])
 def get_process_details(process_id):
     return jsonify(ProcessRepository.fetch_process(process_id))
 

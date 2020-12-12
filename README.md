@@ -10,6 +10,7 @@ pip3 install --upgrade AudioSegment
 pip3 install --upgrade geograpy3 
 pip3 install --upgrade newspaper3k
 pip3 install --upgrade Flask
+pip3 install --upgrade flask-cors
 
 ## required ENV_VARIABLES:
 1= the azure speech service subscription key: 

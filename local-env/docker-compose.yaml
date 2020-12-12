@@ -6,7 +6,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - AZURE_SPEECH_SUBSCRIPTION_KEY=48cce319739240a7b9d957f694a64221
-      - AZURE_SPEECH_SUBSCRIPTION_REGION=eastasia
+      - AZURE_SPEECH_SUBSCRIPTION_KEY=<repleace.this.with.your.supscription.key>
+      - AZURE_SPEECH_SUBSCRIPTION_REGION=<repleace.this.with.your.supscription.region>
     volumes:
-      - ./:/usr/src/app/
+      - ./:/usr/src/service/

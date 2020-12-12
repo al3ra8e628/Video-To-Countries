@@ -2,7 +2,7 @@ FROM python:3.7
 
 WORKDIR /
 
-COPY app ./
+COPY ../service ./
 
 RUN pip3 install --upgrade youtube_dl
 RUN pip3 install --upgrade SpeechRecognition

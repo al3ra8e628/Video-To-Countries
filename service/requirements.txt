@@ -1,0 +1,7 @@
+Flask==1.1.2
+flask-cors==3.0.9
+audiosegment==0.23.0
+azure-cognitiveservices-speech==1.14.0
+geograpy3==0.1.24
+youtube_dl==2020.12.9
+newspaper3k==0.2.8

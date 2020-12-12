@@ -8,9 +8,9 @@ def run(process):
     logging.info("starting video process with process id {}", process["process_id"])
     try:
         # download youtube video as wav file
-        file_name = YoutubeAsWavDownloder.download(process["video_url"])
+        file_path = YoutubeAsWavDownloder.download(process["video_url"])
         # convert wav file to text
-        text = SpeechToTextConverter.convert(file_name)
+        text = SpeechToTextConverter.convert(file_path)
         # extract countries from text
         result = ContriesFromTextExtractor.extract(text)
         #

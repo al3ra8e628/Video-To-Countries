@@ -1,0 +1,24 @@
+<section class="contact bg-primary" id="contact">
+  <div class="container" style="align-content: center">
+    <ngx-ui-loader
+      [text]="'Video Is Under Processing'"
+      [fgsType]="spinnerType"
+      [hasProgressBar]="false">
+    </ngx-ui-loader>
+
+    <form *ngIf="canUpload()" class="form-bg">
+      <p class="form-title">Extract Countries From Video</p>
+      <div class="form-group">
+        <label for="url">Video URL:</label>
+        <input [value]="videoUrl? videoUrl : ''"
+               (change)="changeValue($event.target.value)"
+               type="url"
+               class="form-control"
+               id="url">
+      </div>
+      <div class="btn btn-primary convert-btn" (click)="submitVideo()">Convert</div>
+    </form>
+  </div>
+</section>
+
+
