@@ -13,7 +13,9 @@ CORS(app)
 @app.route('/api/v1/processes', methods=['POST'])
 def start_process():
     req_data = request.get_json()
+
     video_url = str(req_data['url'])
+    video_lang = str(req_data['lang'])
 
     # TODO: uncomment this when finish developing
     # if ProcessRepository.is_process_duplicate(video_url):
@@ -21,7 +23,10 @@ def start_process():
     #         "violation": "Video Already Processed"
     #     }), 400
 
-    process = ProcessRepository.save_process(video_url)
+    process = ProcessRepository.save_process({
+        "video_url": video_url,
+        "video_lang": video_lang
+    })
     process_video_job = threading.Thread(target=ProcessVideoJob.run,
                                          args=(process,))
     process_video_job.start()

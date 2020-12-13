@@ -6,15 +6,26 @@
       [hasProgressBar]="false">
     </ngx-ui-loader>
 
-    <form *ngIf="canUpload()" class="form-bg">
+    <form *ngIf="canUpload()" class="form-container">
       <p class="form-title">Extract Countries From Video</p>
       <div class="form-group">
-        <label for="url">Video URL:</label>
+        <label for="url">Video URL</label>
         <input [value]="videoUrl? videoUrl : ''"
-               (change)="changeValue($event.target.value)"
+               placeholder="https://www.youtube.com/watch?v=random-id"
+               (change)="changeUrl($event.target.value)"
                type="url"
                class="form-control"
                id="url">
+      </div>
+      <div class="form-group">
+        <label for="inputState">Video Language</label>
+        <select id="inputState"
+                class="form-control"
+                [value]="getVideoLanguageValue()"
+                (change)="changeLanguage($event.target.value)"
+        >
+          <option *ngFor="let lang of languages">{{lang.language_name}}</option>
+        </select>
       </div>
       <div class="btn btn-primary convert-btn" (click)="submitVideo()">Convert</div>
     </form>

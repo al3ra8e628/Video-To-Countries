@@ -5,3 +5,5 @@ azure-cognitiveservices-speech==1.14.0
 geograpy3==0.1.24
 youtube_dl==2020.12.9
 newspaper3k==0.2.8
+arabic-reshaper==2.1.1
+polyglot==16.7.4

@@ -1,0 +1,16 @@
+version: "3"
+services:
+  video_to_countries:
+    container_name: video_to_countries
+    build: service
+    ports:
+      - "5000:5000"
+    environment:
+      - AZURE_SPEECH_SUBSCRIPTION_KEY=<repleace.with.your.own>
+      - AZURE_SPEECH_SUBSCRIPTION_REGION=<repleace.with.your.own>
+
+  web-ui:
+    container_name: web-ui
+    build: web-ui
+    ports:
+      - "9040:80"

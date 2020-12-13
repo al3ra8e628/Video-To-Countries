@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BasicHttpService} from './services/basic-http.service';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
+import {Languages} from './models/Language';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,14 @@ import {NgxUiLoaderService} from 'ngx-ui-loader';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  videoUrl = null;
+  languages = Languages;
 
+  videoUrl = null;
+  videoLanguage = 'en-US';
   processResponse = null;
+
   spinnerType: any;
+  serviceUrl = 'http://localhost:5000';
 
   constructor(private httpService: BasicHttpService<any>,
               private ngxService: NgxUiLoaderService) {
@@ -22,7 +27,10 @@ export class AppComponent implements OnInit {
   }
 
   submitVideo() {
-    this.httpService.post(serviceUrl + '/api/v1/processes', {url: this.videoUrl})
+    this.httpService.post(this.serviceUrl + '/api/v1/processes', {
+      url: this.videoUrl,
+      lang: this.videoLanguage
+    })
       .subscribe(res => {
           this.processResponse = res;
           this.ngxService.start();
@@ -33,13 +41,13 @@ export class AppComponent implements OnInit {
         });
   }
 
-  changeValue($event) {
+  changeUrl($event) {
     this.videoUrl = $event;
   }
 
   private loadResponse() {
     const process_id = this.processResponse.process_id;
-    this.httpService.get(`${serviceUrl}/api/v1/processes/${process_id}`)
+    this.httpService.get(`${this.serviceUrl}/api/v1/processes/${process_id}`)
       .subscribe(response => {
         this.processResponse = response;
         if (this.processResponse.status === 'PROCESSING') {
@@ -72,8 +80,20 @@ export class AppComponent implements OnInit {
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
+    this.clearLastProcessedVideo();
   }
 
-}
+  changeLanguage(value: any) {
+    this.videoLanguage = Languages.filter(lang => lang.language_name === value)[0].language_code;
+  }
 
-export const serviceUrl = 'http://localhost:5000';
+  private clearLastProcessedVideo() {
+    this.videoLanguage = 'en-US';
+    this.videoUrl = null;
+    this.processResponse = null;
+  }
+
+  getVideoLanguageValue(): string {
+    return Languages.filter(lang => lang.language_code === this.videoLanguage)[0].language_name;
+  }
+}

@@ -3,10 +3,11 @@ import uuid
 processes = []
 
 
-def save_process(video_url):
+def save_process(process):
     process_id = str(uuid.uuid4())
     process = {
-        "video_url": video_url,
+        "video_url": process["video_url"],
+        "video_lang": get_video_lang_or_default_en(process),
         "process_id": process_id,
         "status": "PROCESSING"
     }
@@ -51,3 +52,7 @@ def get_item_by_property_value(property_name, value):
             }
             return result
     return None
+
+
+def get_video_lang_or_default_en(process):
+    return "en" if process["video_lang"] is None else str(process["video_lang"])
