@@ -1,20 +1,28 @@
-import logging
+from azure.ai.textanalytics import TextAnalyticsClient
+from azure.core.credentials import AzureKeyCredential
 
-from polyglot.downloader import downloader
-
-downloader.supported_tasks(lang="ar")
-downloader.supported_tasks(lang="en")
-
-from polyglot.text import Text
+credential = AzureKeyCredential("3e9a99df8fdf48df81349ebfedf67748")
+endpoint = "https://eastus.api.cognitive.microsoft.com/"
 
 
 def extract(text):
-    countries = []
-    text = Text(text)
-    for sentence in text.sentences:
-        logging.info("Named Entity Recognition Started On The Following Text: {}", sentence)
-        for entity in sentence.entities:
-            if entity.tag == 'I-LOC' and \
-                    entity[0] not in countries:
-                countries.append(entity[0])
-    return countries
+    text = str(text)
+    text_analytics_client = TextAnalyticsClient(endpoint, credential)
+    print("NER process started on the following text: " + text)
+
+    lower = text \
+        .replace("\\r", "") \
+        .replace("\\n", "") \
+        .replace("\\\\r", "") \
+        .replace("\\\\n", "") \
+        .lower()
+
+    result = text_analytics_client.recognize_entities(documents=[lower])[0]
+
+    locations = []
+
+    for entity in result.entities:
+        if entity.category == 'Location' and entity.text not in locations:
+            locations.append(entity.text)
+
+    return locations

@@ -9,7 +9,7 @@ def save_process(process):
         "video_url": process["video_url"],
         "video_lang": get_video_lang_or_default_en(process),
         "process_id": process_id,
-        "status": "PROCESSING"
+        "status": "STARTING"
     }
     processes.append(process)
     return process

@@ -1,10 +1,13 @@
+# AZURE_SPEECH_SUBSCRIPTION_KEY = os.getenv("AZURE_SPEECH_SUBSCRIPTION_KEY")
+# AZURE_SPEECH_SUBSCRIPTION_REGION = os.getenv("AZURE_SPEECH_SUBSCRIPTION_REGION")
+import logging
 import os
 import time
 
 import azure.cognitiveservices.speech as speechsdk
 
-AZURE_SPEECH_SUBSCRIPTION_KEY = os.getenv("AZURE_SPEECH_SUBSCRIPTION_KEY")
-AZURE_SPEECH_SUBSCRIPTION_REGION = os.getenv("AZURE_SPEECH_SUBSCRIPTION_REGION")
+AZURE_SPEECH_SUBSCRIPTION_KEY = "48cce319739240a7b9d957f694a64221"
+AZURE_SPEECH_SUBSCRIPTION_REGION = "eastasia"
 
 
 def convert(file_path, language):
@@ -20,7 +23,7 @@ def convert(file_path, language):
     done = False
 
     def stop_cb(evt):
-        print('CLOSING on {}'.format(evt))
+        logging.info('CLOSING on {}'.format(evt))
         nonlocal done
         done = True
 
