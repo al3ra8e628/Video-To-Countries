@@ -27,7 +27,7 @@
 * Azure(VideoIndexer)  Optical Character Recognition(OCR) for extracting the displayed words showed in the video
 * Azure(TextAnalytics) Name Entity Recognition(NER) to extract location data from texts
 
-#### The following environment variables are required to connect to **`azure speech-to-text`** so don't forget to replace them with your own, expose them and change them in the docker-compose as well.
+#### The following environment variables are required to connect to **`azure web-services`** so don't forget to replace them with your own, expose them and change them in the docker-compose as well.
 
 * the azure text analytics `subscription key`:
   **AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY**
