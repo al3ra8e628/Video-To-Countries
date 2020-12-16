@@ -1,5 +1,10 @@
+import os
+
 from azure.cognitiveservices.language.textanalytics import TextAnalyticsClient
 from msrest.authentication import CognitiveServicesCredentials
+
+AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = os.getenv("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY")
+AZURE_TEXT_ANALYTICS_SUBSCRIPTION_REGION = os.getenv("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_REGION")
 
 
 def extract(text, lang):
@@ -38,8 +43,8 @@ def clean_input_text(text):
 
 
 def authenticate_client():
-    credentials = CognitiveServicesCredentials("3e9a99df8fdf48df81349ebfedf67748")
+    credentials = CognitiveServicesCredentials(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY)
     text_analytics_client = TextAnalyticsClient(
-        endpoint='https://eastus.api.cognitive.microsoft.com/',
+        endpoint='https://' + AZURE_TEXT_ANALYTICS_SUBSCRIPTION_REGION + '.api.cognitive.microsoft.com/',
         credentials=credentials)
     return text_analytics_client

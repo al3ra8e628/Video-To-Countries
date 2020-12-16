@@ -6,9 +6,11 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - AZURE_SPEECH_SUBSCRIPTION_KEY=<repleace.with.your.own>
-      - AZURE_SPEECH_SUBSCRIPTION_REGION=<repleace.with.your.own>
-
+      - AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY=<repleace.with.your.own>
+      - AZURE_TEXT_ANALYTICS_SUBSCRIPTION_REGION=<repleace.with.your.own>
+      - AZURE_VIDEO_INDEXER_SUBSCRIPTION_KEY=<repleace.with.your.own>
+      - AZURE_VIDEO_INDEXER_LOCATION=<repleace.with.your.own>
+      - AZURE_VIDEO_INDEXER_ACCOUNT_ID=<repleace.with.your.own>
   web-ui:
     container_name: web-ui
     build: web-ui

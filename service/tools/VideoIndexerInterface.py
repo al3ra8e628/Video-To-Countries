@@ -1,19 +1,18 @@
+import os
 import time
 import uuid
 
 from jsonpath_ng.ext import parse
 from video_indexer import VideoIndexer
 
-CONFIG = {
-    'SUBSCRIPTION_KEY': '1b9899f438524a60af21946e9f9f8cac',
-    'LOCATION': 'trial',
-    'ACCOUNT_ID': '7f9a24ec-6ca5-4c18-8328-9b205fee7488'
-}
+AZURE_VIDEO_INDEXER_SUBSCRIPTION_KEY = os.getenv("AZURE_VIDEO_INDEXER_SUBSCRIPTION_KEY")
+AZURE_VIDEO_INDEXER_LOCATION = os.getenv("AZURE_VIDEO_INDEXER_LOCATION")
+AZURE_VIDEO_INDEXER_ACCOUNT_ID = os.getenv("AZURE_VIDEO_INDEXER_ACCOUNT_ID")
 
 video_indexer = VideoIndexer(
-    vi_subscription_key=CONFIG['SUBSCRIPTION_KEY'],
-    vi_location=CONFIG['LOCATION'],
-    vi_account_id=CONFIG['ACCOUNT_ID']
+    vi_subscription_key=AZURE_VIDEO_INDEXER_SUBSCRIPTION_KEY,
+    vi_location=AZURE_VIDEO_INDEXER_LOCATION,
+    vi_account_id=AZURE_VIDEO_INDEXER_ACCOUNT_ID
 )
 
 

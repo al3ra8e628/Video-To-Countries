@@ -23,14 +23,21 @@
 * Flask for creating a RestFul API
 
 * Youtube-dl for downloading the youtube videos
-* Azure(Speech-To-Text) for a converting the audio content to text
-* polyglot(Name-Entity-Recognition) to extract the location related data from text
+* Azure(VideoIndexer)  Speech To Text(STT) Extracting the Speech from the video as text
+* Azure(VideoIndexer)  Optical Character Recognition(OCR) for extracting the displayed words showed in the video
+* Azure(TextAnalytics) Name Entity Recognition(NER) to extract location data from texts
 
 #### The following environment variables are required to connect to **`azure speech-to-text`** so don't forget to replace them with your own, expose them and change them in the docker-compose as well.
 
-* the azure speech service `subscription key`:
-  **AZURE_SPEECH_SUBSCRIPTION_KEY**
-* the azure speech service `subscription region`:
-  **AZURE_SPEECH_SUBSCRIPTION_REGION**
+* the azure text analytics `subscription key`:
+  **AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY**
+* the azure text analytics `subscription region`:
+  **AZURE_TEXT_ANALYTICS_SUBSCRIPTION_REGION**
+* the azure video indexer `subscription key`:
+  **AZURE_VIDEO_INDEXER_SUBSCRIPTION_KEY**
+* the azure video indexer `subscription location`:
+  **AZURE_VIDEO_INDEXER_LOCATION**
+* the azure video indexer `subscription accountID`:
+  **AZURE_VIDEO_INDEXER_ACCOUNT_ID**
 
 when running the docker-compose you can reach the application UI by visiting: **`http://localhost:9040/web-ui`**
