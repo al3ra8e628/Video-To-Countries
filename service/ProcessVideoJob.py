@@ -1,8 +1,6 @@
-import json
 import logging
 import os
 
-from repositories import ProcessRepository
 from repositories.ProcessRepository import update_process
 from tools import VideoIndexerInterface, ContriesFromTextExtractor
 from tools import YoutubeVideoDownloder
@@ -65,4 +63,3 @@ def get_shared_items(countries_from_speech, countries_from_ocr):
 
 def update_process_fun(process_updates):
     update_process(process_updates)
-    print(json.dumps(ProcessRepository.fetch_process(process_updates["process_id"])))
