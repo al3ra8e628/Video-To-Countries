@@ -1,47 +1,42 @@
+import json
 import logging
 import os
 
+from repositories import ProcessRepository
 from repositories.ProcessRepository import update_process
-from tools import ContriesFromTextExtractor
-from tools import VideoIndexerInterface
+from tools import VideoIndexerInterface, ContriesFromTextExtractor
+from tools import YoutubeVideoDownloder
 
 
 def run(process):
     logging.info("starting video process with process id {}", process["process_id"])
     try:
-        # update_process({
-        #     "process_id": process["process_id"],
-        #     "status": "DOWNLOADING"
-        # })
-        # # download youtube video as wav file
-        # file_path = YoutubeAsWavDownloder.download(process["video_url"])
-        # # convert wav file to text
+        video_language = process["video_lang"]
+        process_id = process["process_id"]
 
-        video_file_path = "temp/countries-across-asia-report-covid-19-spikes_no_audio.mp4"
+        update_process_status(process_id=process_id, status="DOWNLOADING")
+        video_file_path = YoutubeVideoDownloder.download(process)
 
-        update_process({
-            "process_id": process["process_id"],
-            "status": "PROCESSING"
-        })
+        update_process_status(process_id=process_id, status="PROCESSING")
+        video_processing_result = VideoIndexerInterface.process(video_file_path,
+                                                                process,
+                                                                update_process_fun)
 
-        video_processing_result = VideoIndexerInterface \
-            .process(video_file_path, process["video_lang"])
+        countries_from_speech = ContriesFromTextExtractor.extract(text=video_processing_result['speech_as_text'],
+                                                                  lang=video_language)
 
-        countries_from_speech = ContriesFromTextExtractor.extract(
-            video_processing_result['speech_as_text'])
-
-        countries_from_ocr = ContriesFromTextExtractor.extract(
-            video_processing_result['ocr_text'])
+        countries_from_ocr = ContriesFromTextExtractor.extract(text=video_processing_result['ocr_text'],
+                                                               lang=video_language)
 
         update_process({
-            "process_id": process["process_id"],
+            "process_id": process_id,
             "status": "COMPLETED",
             "countries_form_speech": countries_from_speech,
-            "countries_from_ocr": countries_from_ocr,
-            "shared_countries": get_shared_items(
-                countries_from_speech, countries_from_ocr
+            "countries_from_video": countries_from_ocr,
+            "common_countries": get_shared_items(
+                countries_from_speech,
+                countries_from_ocr
             )})
-
         os.remove(video_file_path)
     except RuntimeError as e:
         logging.info("exception occurred on video processing {}", e)
@@ -52,6 +47,22 @@ def run(process):
         })
 
 
-def get_shared_items(countries_from_speech,
-                     countries_from_ocr):
-    pass
+def update_process_status(process_id, status):
+    update_process({
+        "process_id": process_id,
+        "status": status
+    })
+
+
+def extract_countries_from_text(video_language, text):
+    return ContriesFromTextExtractor.extract(text=text,
+                                             lang=video_language)
+
+
+def get_shared_items(countries_from_speech, countries_from_ocr):
+    return list(set(countries_from_speech).intersection(countries_from_ocr))
+
+
+def update_process_fun(process_updates):
+    update_process(process_updates)
+    print(json.dumps(ProcessRepository.fetch_process(process_updates["process_id"])))

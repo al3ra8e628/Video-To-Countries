@@ -1,28 +1,45 @@
-from azure.ai.textanalytics import TextAnalyticsClient
-from azure.core.credentials import AzureKeyCredential
-
-credential = AzureKeyCredential("3e9a99df8fdf48df81349ebfedf67748")
-endpoint = "https://eastus.api.cognitive.microsoft.com/"
+from azure.cognitiveservices.language.textanalytics import TextAnalyticsClient
+from msrest.authentication import CognitiveServicesCredentials
 
 
-def extract(text):
-    text = str(text)
-    text_analytics_client = TextAnalyticsClient(endpoint, credential)
-    print("NER process started on the following text: " + text)
+def extract(text, lang):
+    if len(text) > 0:
+        client = authenticate_client()
+        text = clean_input_text(str(text))
+        locations = []
+        try:
+            response = client.entities(documents=[prepare_documents(lang, text)]).documents[0]
 
-    lower = text \
+            for entity in response.entities:
+                if entity.type == "Location" and entity.name not in locations:  # and entity.sub_type == "GPE":
+                    locations.append(entity.name)
+
+        except Exception as err:
+            print("Encountered exception. {}".format(err))
+        return locations
+
+
+def prepare_documents(lang, text):
+    return {
+        "id": "1",
+        "language": "ar" if lang == "Arabic" else "en",
+        "text": text
+    }
+
+
+def clean_input_text(text):
+    return text \
         .replace("\\r", "") \
         .replace("\\n", "") \
         .replace("\\\\r", "") \
         .replace("\\\\n", "") \
-        .lower()
+        .replace("،", "") \
+        .replace("\r\n", " ")
 
-    result = text_analytics_client.recognize_entities(documents=[lower])[0]
 
-    locations = []
-
-    for entity in result.entities:
-        if entity.category == 'Location' and entity.text not in locations:
-            locations.append(entity.text)
-
-    return locations
+def authenticate_client():
+    credentials = CognitiveServicesCredentials("3e9a99df8fdf48df81349ebfedf67748")
+    text_analytics_client = TextAnalyticsClient(
+        endpoint='https://eastus.api.cognitive.microsoft.com/',
+        credentials=credentials)
+    return text_analytics_client

@@ -1,4 +1,5 @@
 import time
+import uuid
 
 from jsonpath_ng.ext import parse
 from video_indexer import VideoIndexer
@@ -16,29 +17,30 @@ video_indexer = VideoIndexer(
 )
 
 
-def process(video_file_path, language):
-    # video_id = vi.upload_to_video_indexer(
-    #     input_filename=video_file_path,
-    #     video_name=uuid.uuid4(),
-    #     video_language="English")
-
-    # video_id = 'a54015442b'
-    video_id = '6fcd4b3231'
+def process(video_file_path, process_details, update_process_fun):
+    video_lang = process_details["video_lang"]
+    video_id = video_indexer.upload_to_video_indexer(
+        input_filename=video_file_path,
+        video_name=uuid.uuid4(),
+        video_language=video_lang)
 
     video_info = fetch_video_info(
         video_id=video_id,
-        language=language
+        language=video_lang
     )
 
-    while video_info['state'] is 'processing':
+    while video_info['state'] == 'Processing':
         time.sleep(2)
-        video_info = fetch_video_info(video_id, language)
+        video_info = fetch_video_info(video_id, video_lang)
+        update_progress_percentage(video_info, process_details, update_process_fun)
 
     speech_as_text = video_indexer.get_caption_from_video_indexer(
         video_id=video_id,
-        video_language=language,
+        video_language=video_lang,
         caption_format="txt"
     )
+
+    speech_as_text = str(speech_as_text, "utf-8")
 
     ocr_text = extract_ocr_text(video_info)
 
@@ -46,6 +48,16 @@ def process(video_file_path, language):
         "speech_as_text": speech_as_text.strip(),
         "ocr_text": ocr_text.strip()
     }
+
+
+def update_progress_percentage(video_info,
+                               process_details,
+                               update_process_fun):
+    percentage = parse('$.videos.[0].processingProgress').find(video_info)
+    update_process_fun({
+        "process_id": process_details["process_id"],
+        "progress": percentage[0].value
+    })
 
 
 def fetch_video_info(video_id, language):
@@ -67,5 +79,3 @@ def extract_ocr_text(json_data):
             ocr_final_values.append(temp_val)
 
     return "".join(ocr_final_values)
-
-# https://www.geeksforgeeks.org/python-test-if-string-contains-element-from-list/
