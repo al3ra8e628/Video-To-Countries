@@ -26,15 +26,14 @@ def run(process):
         countries_from_ocr = ContriesFromTextExtractor.extract(text=video_processing_result['ocr_text'],
                                                                lang=video_language)
 
+        common_countries = get_shared_items(countries_from_speech, countries_from_ocr)
+
         update_process({
             "process_id": process_id,
             "status": "COMPLETED",
             "countries_form_speech": countries_from_speech,
             "countries_from_video": countries_from_ocr,
-            "common_countries": get_shared_items(
-                countries_from_speech,
-                countries_from_ocr
-            )})
+            "common_countries": common_countries})
         os.remove(video_file_path)
     except RuntimeError as e:
         logging.info("exception occurred on video processing {}", e)
