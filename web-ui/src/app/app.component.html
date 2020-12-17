@@ -1,7 +1,7 @@
 <section class="contact bg-primary" id="contact">
   <div class="container" style="align-content: center">
     <ngx-ui-loader
-      [text]="'Video Is Under Processing'"
+      [text]="getProcessingMessage()"
       [fgsType]="spinnerType"
       [hasProgressBar]="false">
     </ngx-ui-loader>
@@ -24,10 +24,10 @@
                 [value]="getVideoLanguageValue()"
                 (change)="changeLanguage($event.target.value)"
         >
-          <option *ngFor="let lang of languages">{{lang.language_name}}</option>
+          <option *ngFor="let lang of languages">{{lang}}</option>
         </select>
       </div>
-      <div class="btn btn-primary convert-btn" (click)="submitVideo()">Convert</div>
+      <div class="btn btn-primary convert-btn" (click)="submitVideo()">Extract</div>
     </form>
   </div>
 </section>

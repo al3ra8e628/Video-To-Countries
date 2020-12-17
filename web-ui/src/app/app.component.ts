@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BasicHttpService} from './services/basic-http.service';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
-import {Languages} from './models/Language';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +8,11 @@ import {Languages} from './models/Language';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  languages = Languages;
+  languages = ["English", "Arabic"];
 
   videoUrl = null;
-  videoLanguage = 'en-US';
+  videoLanguage = 'English';
   processResponse = null;
-
   spinnerType: any;
   serviceUrl = 'http://localhost:5000';
 
@@ -50,7 +48,8 @@ export class AppComponent implements OnInit {
     this.httpService.get(`${this.serviceUrl}/api/v1/processes/${process_id}`)
       .subscribe(response => {
         this.processResponse = response;
-        if (this.processResponse.status === 'PROCESSING') {
+        if (this.processResponse.status === 'PROCESSING'
+          || this.processResponse.status === 'DOWNLOADING') {
           setTimeout(() => {
             this.loadResponse();
           }, 5000);
@@ -84,16 +83,24 @@ export class AppComponent implements OnInit {
   }
 
   changeLanguage(value: any) {
-    this.videoLanguage = Languages.filter(lang => lang.language_name === value)[0].language_code;
+    this.videoLanguage = value;
   }
 
   private clearLastProcessedVideo() {
-    this.videoLanguage = 'en-US';
+    this.videoLanguage = 'English';
     this.videoUrl = null;
     this.processResponse = null;
   }
 
   getVideoLanguageValue(): string {
-    return Languages.filter(lang => lang.language_code === this.videoLanguage)[0].language_name;
+    return this.videoLanguage;
+  }
+
+  getProcessingMessage(): string {
+    if (!this.processResponse)
+      return "PROCESSING"
+    if (this.processResponse.progress)
+      return `${this.processResponse.status} ${this.processResponse.progress}`
+    return this.processResponse.status
   }
 }

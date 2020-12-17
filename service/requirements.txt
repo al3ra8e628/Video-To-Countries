@@ -1,9 +1,9 @@
 Flask==1.1.2
 flask-cors==3.0.9
 audiosegment==0.23.0
-azure-cognitiveservices-speech==1.14.0
-geograpy3==0.1.24
 youtube_dl==2020.12.9
-newspaper3k==0.2.8
-arabic-reshaper==2.1.1
-polyglot==16.7.4
+video_indexer==0.1.7
+jsonpath-ng==1.5.2
+azure-ai-textanalytics==5.0.0
+azure-cognitiveservices-language-textanalytics==0.2.0
+geopy==2.0.0
