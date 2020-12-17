@@ -6,3 +6,4 @@ video_indexer==0.1.7
 jsonpath-ng==1.5.2
 azure-ai-textanalytics==5.0.0
 azure-cognitiveservices-language-textanalytics==0.2.0
+geopy==2.0.0

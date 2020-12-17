@@ -2,7 +2,7 @@ import logging
 import os
 
 from repositories.ProcessRepository import update_process
-from tools import VideoIndexerInterface, ContriesFromTextExtractor
+from tools import VideoIndexerInterface, CountriesFromTextExtractor
 from tools import YoutubeVideoDownloder
 
 
@@ -20,11 +20,11 @@ def run(process):
                                                                 process,
                                                                 update_process_fun)
 
-        countries_from_speech = ContriesFromTextExtractor.extract(text=video_processing_result['speech_as_text'],
-                                                                  lang=video_language)
+        countries_from_speech = CountriesFromTextExtractor.extract(text=video_processing_result['speech_as_text'],
+                                                                   lang=video_language)
 
-        countries_from_ocr = ContriesFromTextExtractor.extract(text=video_processing_result['ocr_text'],
-                                                               lang=video_language)
+        countries_from_ocr = CountriesFromTextExtractor.extract(text=video_processing_result['ocr_text'],
+                                                                lang=video_language)
 
         common_countries = get_shared_items(countries_from_speech, countries_from_ocr)
 
@@ -52,8 +52,8 @@ def update_process_status(process_id, status):
 
 
 def extract_countries_from_text(video_language, text):
-    return ContriesFromTextExtractor.extract(text=text,
-                                             lang=video_language)
+    return CountriesFromTextExtractor.extract(text=text,
+                                              lang=video_language)
 
 
 def get_shared_items(countries_from_speech, countries_from_ocr):

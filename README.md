@@ -23,6 +23,7 @@
 * Flask for creating a RestFul API
 
 * Youtube-dl for downloading the youtube videos
+* geopy for getting the countries name by its cities names in side it
 * Azure(VideoIndexer)  Speech To Text(STT) Extracting the Speech from the video as text
 * Azure(VideoIndexer)  Optical Character Recognition(OCR) for extracting the displayed words showed in the video
 * Azure(TextAnalytics) Name Entity Recognition(NER) to extract location data from texts
